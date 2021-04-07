@@ -3,7 +3,7 @@ import {createAppContainer} from 'react-navigation';
 // import Home from '../screens/Home';
 // import Tracking from '../screens/Tracking';
 // import Profile from '../screens/Profile';
-import {Home, Tracking, Profile} from '../screens/';
+import {Home, Tracking, Profile, SignIn} from '../screens/';
 
 
 const createStackNavigatorOptions = {
@@ -13,7 +13,8 @@ const createStackNavigatorOptions = {
 const AppNavigator = createStackNavigator({
     Home:{screen:Home},
     Tracking:{screen:Tracking},
-    Profile:{screen:Profile}
+    Profile:{screen:Profile},
+    SignIn:{screen:SignIn}
 },
 
 {
