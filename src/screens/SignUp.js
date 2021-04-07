@@ -24,7 +24,7 @@ import { Line } from 'react-native-svg';
 import { Button, Input } from 'react-native-elements';
 import { ScrollView } from 'react-native';
 
-const SignIn = ({ navigation }) => {
+const SignUp = ({ navigation }) => {
 
     const [data, setData] = React.useState({
         email: '',
@@ -56,6 +56,12 @@ const SignIn = ({ navigation }) => {
         });
     }
 
+    const handleConfirmPasswordChange = (val) => {
+        if (val !== data.password){
+
+        }
+    }
+
     const updateSecureTextEntry = () => {
         setData({
             ...data,
@@ -63,10 +69,27 @@ const SignIn = ({ navigation }) => {
         });
     }
 
+    function renderBackArrow() {
+        return (
+            <TouchableOpacity
+                    onPress={() => navigation.navigate("SignIn")}
+            >
+                <Image
+                    source={icons.arrow}
+                    resizeMode="contain"
+                    style={styles.backArrow}
+                >
+
+                </Image>
+            </TouchableOpacity>
+        )
+    }
+
     return (
         <SafeAreaView style={styles.container}>
+            {renderBackArrow()}
             <View style={styles.header}>
-                <Text style={styles.textHeader}>Welcome to FerMentor!</Text>
+                <Text style={styles.textHeader}>Sign Up</Text>
             </View>
             <View style={styles.footer}>
             <ScrollView> 
@@ -126,33 +149,47 @@ const SignIn = ({ navigation }) => {
                         />}
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                    // style={styles.forgotPassword}
-                    //onPress: forgot password
-                >
-                    <View style={styles.forgotPassword}>
-                        <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-                    </View>
-                </TouchableOpacity>
+                <View style={styles.password}>
+                    <Text style={styles.textFooter}>CONFIRM PASSWORD</Text>
+                </View>
+                <View style={styles.box}>
+                    <FontAwesome
+                        name="lock"
+                        color={COLORS.primary}
+                        size={20}
+                    />
+                    <TextInput
+                        placeholder="Your Password"
+                        style={styles.textInput}
+                        autoCapitalize="none"
+                        secureTextEntry={data.secureTextEntry ? true : false}
+                        onChangeText={(val) => handleConfirmPasswordChange(val)}
+                    />
+                    <TouchableOpacity
+                        onPress={updateSecureTextEntry}
+                    >   
+                        {data.secureTextEntry ?
+                        <EyeOff 
+                            color={COLORS.primary}
+                            size={20}
+                        />
+                        :
+                        <Eye 
+                            color={COLORS.primary}
+                            size={20}
+                        />}
+                    </TouchableOpacity>
+                </View>
                 <TouchableOpacity
                     style={styles.button}
                     //onPress: handle sign in
                 >
                     <View style={styles.signIn}>
-                        <Text style={styles.buttonText}>SIGN IN</Text>
+                        <Text style={styles.buttonText}>SIGN UP</Text>
                     </View>
                 </TouchableOpacity>
-                <View style={styles.signUp}>
-                    <Text style={styles.accountText}>Don't have your account?</Text>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate("SignUp")}
-                    >
-                        <Text style={styles.signUpText}> Sign Up</Text>
-                    </TouchableOpacity>
-                </View>
                 </ScrollView>
-            </View>
-            
+            </View>           
         </SafeAreaView>
     )
 }
@@ -161,6 +198,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.primary
+    },
+    backArrow: {
+        padding: SIZES.padding * 3,
+        marginHorizontal: SIZES.padding,
+        width: 10,
+        height: 10,
+        tintColor: COLORS.white
     },
     header: {
         flex: 1,
@@ -241,4 +285,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SignIn;
+export default SignUp;

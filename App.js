@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { Home, Tracking, Profile, 
-  Recipes, Conversion, Discussion, RecipeDetail, SignIn } from './src/screens';
+  Recipes, Conversion, Discussion, RecipeDetail, SignIn, SignUp } from './src/screens';
 import Tabs from './src/navigations/tabs';
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
@@ -28,35 +28,36 @@ const App = () => {
       />
     );
   }
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+      screenOptions={{
+                headerShown: false
+              }}
+              initialRouteName={"SignIn"}>
+        <Stack.Screen name="SignIn" component={SignIn}/>
+        <Stack.Screen name="SignUp" component={SignUp}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
   // return (
   //   <NavigationContainer>
   //     <Stack.Navigator
-  //     screenOptions={{
-  //               headerShown: false
-  //             }}
-  //             initialRouteName={"SignIn"}>
+  //       screenOptions={{
+  //         headerShown: false
+  //       }}
+  //       initialRouteName={"Home"}>
+  //       <Stack.Screen name="Home" component={Tabs}/>
+  //       <Stack.Screen name="Tracking" component={Tracking}/>
+  //       <Stack.Screen name="Profile" component={Profile}/>
+  //       <Stack.Screen name="Recipes" component={Recipes}/>
+  //       <Stack.Screen name="Conversion" component={Conversion}/>
+  //       <Stack.Screen name="Discussion" component={Discussion}/>
+  //       <Stack.Screen name="RecipeDetail" component={RecipeDetail}/>
   //       <Stack.Screen name="SignIn" component={SignIn}/>
   //     </Stack.Navigator>
   //   </NavigationContainer>
   // )
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false
-        }}
-        initialRouteName={"Home"}>
-        <Stack.Screen name="Home" component={Tabs}/>
-        <Stack.Screen name="Tracking" component={Tracking}/>
-        <Stack.Screen name="Profile" component={Profile}/>
-        <Stack.Screen name="Recipes" component={Recipes}/>
-        <Stack.Screen name="Conversion" component={Conversion}/>
-        <Stack.Screen name="Discussion" component={Discussion}/>
-        <Stack.Screen name="RecipeDetail" component={RecipeDetail}/>
-        <Stack.Screen name="SignIn" component={SignIn}/>
-      </Stack.Navigator>
-    </NavigationContainer>
-  )
 }
 
 export default App;

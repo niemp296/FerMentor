@@ -6,6 +6,7 @@ import Conversion from './Conversion';
 import Discussion from './Discussion';
 import RecipeDetail from './RecipeDetail';
 import SignIn from './SignIn';
+import SignUp from './SignUp';
 
 export {
     //main pages
@@ -19,5 +20,5 @@ export {
     RecipeDetail,
     //SignIn, SignUp
     SignIn,
-   
+    SignUp
 }
