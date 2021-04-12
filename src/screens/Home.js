@@ -9,17 +9,17 @@ import {
     FlatList
 } from 'react-native';
 import { icons, images, SIZES, COLORS, FONTS } from '../../constants';
+import { auth, db } from '../../backend/firebase';
 
-const Home = ({ navigation }) => {
+const Home = ({  navigation }) => {
 
-    // Dummy Datas
-    const user = "RICH"
+    const user = auth?.currentUser?.displayName
 
     function renderHeader() {
         return (
             <View style={styles.header}>
                 <Text style={styles.headerText}>
-                    HEY, {user}.
+                    HEY, {user.toUpperCase()}.
                 </Text>
             </View>
         )

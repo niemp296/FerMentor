@@ -23,6 +23,7 @@ import useColorScheme from 'react-native/Libraries/Utilities/useColorScheme';
 import { Line } from 'react-native-svg';
 import { Button, Input } from 'react-native-elements';
 import { ScrollView } from 'react-native';
+import { auth } from "../../backend/firebase";
 
 const SignIn = ({ navigation }) => {
 
@@ -32,6 +33,16 @@ const SignIn = ({ navigation }) => {
         check_textInputChange: false,
         secureTextEntry: true
     });
+
+    React.useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+            console.log(authUser)
+            if (authUser) {
+                navigation.replace('Home', { data });
+            }
+        });
+        return unsubscribe;
+    }, []);
     
     const textInputChange = (val) => {
         if (val.length !== 0) {
@@ -62,6 +73,17 @@ const SignIn = ({ navigation }) => {
             secureTextEntry: !data.secureTextEntry
         });
     }
+
+    const signIn = () => {
+        if ( data.email.length == 0 || data.password.length == 0 ) {
+            Alert.alert('Wrong Input!', 'Username or password field cannot be empty.', [
+                {text: 'Okay'}
+            ]);
+            return;
+        }
+        auth.signInWithEmailAndPassword(data.email, data.password)
+        .catch((error) => alert(error))
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -136,7 +158,7 @@ const SignIn = ({ navigation }) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button}
-                    //onPress: handle sign in
+                    onPress={() => signIn()}
                 >
                     <View style={styles.signIn}>
                         <Text style={styles.buttonText}>SIGN IN</Text>
@@ -229,7 +251,7 @@ const styles = StyleSheet.create({
     signUp: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     accountText: {
         color: COLORS.primary,

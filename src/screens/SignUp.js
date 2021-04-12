@@ -12,7 +12,8 @@ import {
     Platform,
     Keyboard,
     KeyboardAvoidingView,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    Alert
 } from 'react-native';
 import { icons, images, SIZES, COLORS, FONTS } from '../../constants';
 import * as Animatable from 'react-native-animatable';
@@ -21,16 +22,19 @@ import { FontAwesome } from '@expo/vector-icons';
 import { CheckCircle, EyeOff, Eye, Key } from "react-native-feather";
 import useColorScheme from 'react-native/Libraries/Utilities/useColorScheme';
 import { Line } from 'react-native-svg';
-import { Button, Input } from 'react-native-elements';
+import { Button, colors, Input } from 'react-native-elements';
 import { ScrollView } from 'react-native';
+import { auth } from "../../backend/firebase";
 
 const SignUp = ({ navigation }) => {
 
     const [data, setData] = React.useState({
+        name: '',
         email: '',
         password: '',
+        confirmPassword: '',
         check_textInputChange: false,
-        secureTextEntry: true
+        secureTextEntry: true,   
     });
     
     const textInputChange = (val) => {
@@ -56,10 +60,18 @@ const SignUp = ({ navigation }) => {
         });
     }
 
-    const handleConfirmPasswordChange = (val) => {
-        if (val !== data.password){
+    const handleNameChange = (val) => {
+        setData({
+            ...data,
+            name: val
+        });
+    }
 
-        }
+    const handleConfirmPasswordChange = (val) => {
+        setData({
+            ...data,
+            confirmPassword: val
+        });
     }
 
     const updateSecureTextEntry = () => {
@@ -68,6 +80,29 @@ const SignUp = ({ navigation }) => {
             secureTextEntry: !data.secureTextEntry
         });
     }
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerBackTitle: 'Sign In'
+        })
+    }, [navigation]);
+
+    const register = () => {
+        if (data.password !== data.confirmPassword) {
+            Alert.alert('Confirm Password does not match with Password', [
+                {text: 'Okay'}
+            ]);
+            return;
+        } else {
+            auth.createUserWithEmailAndPassword(data.email, data.password)
+            .then((authUser) => {
+                authUser.user.updateProfile({
+                    displayName: data.name
+                })
+            })
+            .catch(error => alert(error.message));
+        }
+    };
 
     function renderBackArrow() {
         return (
@@ -88,12 +123,26 @@ const SignUp = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             {renderBackArrow()}
+            <ScrollView> 
             <View style={styles.header}>
                 <Text style={styles.textHeader}>Sign Up</Text>
             </View>
-            <View style={styles.footer}>
-            <ScrollView> 
-                <Text style={styles.textFooter}>EMAIL ADDRESS</Text>
+            <SafeAreaView style={styles.footer}>         
+                <Text style={styles.textFooter}>FULL NAME</Text>
+                <View style={styles.box}>
+                    <FontAwesome
+                        name="user-o"
+                        color={COLORS.primary}
+                        size={20}
+                    />
+                    <TextInput
+                        placeholder="Full Name"
+                        style={styles.textInput}
+                        autoCapitalize="none"
+                        onChangeText={(val) => handleNameChange(val)}
+                    />
+                </View>
+                <Text style={styles.textFooter, {paddingTop: SIZES.padding * 3}}>EMAIL ADDRESS</Text>
                 <View style={styles.box}>
                     <FontAwesome
                         name="user-o"
@@ -159,11 +208,12 @@ const SignUp = ({ navigation }) => {
                         size={20}
                     />
                     <TextInput
-                        placeholder="Your Password"
+                        placeholder="Confirm Your Password"
                         style={styles.textInput}
                         autoCapitalize="none"
                         secureTextEntry={data.secureTextEntry ? true : false}
                         onChangeText={(val) => handleConfirmPasswordChange(val)}
+                        onSubmitEditing={register}
                     />
                     <TouchableOpacity
                         onPress={updateSecureTextEntry}
@@ -182,14 +232,15 @@ const SignUp = ({ navigation }) => {
                 </View>
                 <TouchableOpacity
                     style={styles.button}
-                    //onPress: handle sign in
+                    onPress={() => register()}
                 >
                     <View style={styles.signIn}>
                         <Text style={styles.buttonText}>SIGN UP</Text>
                     </View>
                 </TouchableOpacity>
-                </ScrollView>
-            </View>           
+                
+            </SafeAreaView>     
+            </ScrollView>      
         </SafeAreaView>
     )
 }
@@ -210,7 +261,9 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
         paddingHorizontal: SIZES.padding * 3,
-        paddingBottom: SIZES.padding * 5
+        paddingBottom: SIZES.padding * 5,
+        paddingTop: SIZES.padding * 3,
+        color: COLORS.primary
     },
     footer: {
         flex: 4,
@@ -218,7 +271,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: SIZES.radius * 4,
         borderTopRightRadius: SIZES.radius * 4,
         paddingHorizontal: SIZES.padding * 3,
-        paddingVertical: SIZES.padding * 5
+        paddingVertical: SIZES.padding * 5,
     },
     textHeader: {
         color: COLORS.white,
@@ -248,6 +301,7 @@ const styles = StyleSheet.create({
     },
     button: {
         paddingTop: SIZES.padding * 3,
+        paddingBottom: SIZES.padding * 20,
         alignItems: 'center',
     },
     signIn: {       
