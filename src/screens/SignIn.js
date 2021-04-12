@@ -38,7 +38,7 @@ const SignIn = ({ navigation }) => {
         const unsubscribe = auth.onAuthStateChanged((authUser) => {
             console.log(authUser)
             if (authUser) {
-                navigation.replace('Home', { data });
+                navigation.replace('Home');
             }
         });
         return unsubscribe;
