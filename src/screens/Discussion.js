@@ -9,28 +9,34 @@ import {
     FlatList
 } from 'react-native';
 import { icons, images, SIZES, COLORS, FONTS } from '../../constants';
+import { auth, db } from '../../backend/firebase';
 
 const Discussion = ({ navigation }) => {
+    const [chats, setChats] = React.useState([]);
 
     function renderBackArrow() {
         return (
-            <TouchableOpacity
-                    onPress={() => navigation.navigate("Home")}
-            >
-                <Image
-                    source={icons.arrow}
-                    resizeMode="contain"
-                    style={styles.backArrow}
+            <View style={styles.header}>
+                <TouchableOpacity
+                        onPress={() => navigation.navigate("Home")}
+                        style={styles.backArrow}
                 >
-
-                </Image>
-            </TouchableOpacity>
+                    <Image
+                        source={icons.arrow}
+                        resizeMode="contain"
+                        style={styles.arrowSize}
+                    >
+                    </Image>
+                </TouchableOpacity>
+                <View style={styles.title}>
+                    <Text style={styles.titleText}>CHAT ROOM</Text>
+                </View>
+            </View>
         )
     }
     return (
         <SafeAreaView style={styles.container}>
             {renderBackArrow()}
-            <Text>Discussion</Text>
         </SafeAreaView>
     )
 } 
@@ -41,9 +47,27 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white
     },
     backArrow: {
-        padding: SIZES.padding * 3,
-        width: 10,
-        height: 10,
+        paddingLeft: SIZES.padding,
+        justifyContent: 'center',
+        width: 50,
+    },
+    arrowSize: {
+        width: 50,
+        height: 50,
+    },
+    header: {
+        flexDirection: 'row',
+    },
+    titleText: {
+        paddingVertical: SIZES.padding * 2,
+        marginRight: SIZES.padding * 2,
+        ...FONTS.h2,
+        color: COLORS.secondary
+    },
+    title: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 })
 

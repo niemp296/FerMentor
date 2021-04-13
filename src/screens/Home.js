@@ -10,8 +10,24 @@ import {
 } from 'react-native';
 import { icons, images, SIZES, COLORS, FONTS } from '../../constants';
 import { auth, db } from '../../backend/firebase';
+import { Avatar } from 'react-native-elements';
 
 const Home = ({  navigation }) => {
+    const [isLoading, setIsLoading] = React.useState(true);
+    // use for sign out later
+    const signOutUser = () => {
+        auth.signOut().then(() => {
+            navigation.replace('SignIn')
+        });
+    };
+    
+    React.useEffect(() => {
+        let timeout = setTimeout(() => {
+          setIsLoading(false);
+        }, 1000)
+    
+        return () => clearTimeout(timeout);
+      }, [])
 
     const user = auth?.currentUser?.displayName
 
@@ -19,8 +35,11 @@ const Home = ({  navigation }) => {
         return (
             <View style={styles.header}>
                 <Text style={styles.headerText}>
-                    HEY, {user.toUpperCase()}.
+                    Hi, {user}!
                 </Text>
+                <TouchableOpacity onPress={signOutUser} style={{right:0}}>
+                    <Avatar rounded source={{ uri: auth?.currentUser?.photoURL}}/>
+                </TouchableOpacity>
             </View>
         )
     }
@@ -90,7 +109,10 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white
     },
     header: {
-        padding: SIZES.padding * 3
+        padding: SIZES.padding * 3,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignContent: 'space-between' 
     },
     headerText: {
         ...FONTS.h1

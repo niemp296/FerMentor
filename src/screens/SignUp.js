@@ -88,20 +88,14 @@ const SignUp = ({ navigation }) => {
     }, [navigation]);
 
     const register = () => {
-        if (data.password !== data.confirmPassword) {
-            Alert.alert('Confirm Password does not match with Password', [
-                {text: 'Okay'}
-            ]);
-            return;
-        } else {
-            auth.createUserWithEmailAndPassword(data.email, data.password)
-            .then((authUser) => {
-                authUser.user.updateProfile({
-                    displayName: data.name
-                })
+        auth.createUserWithEmailAndPassword(data.email, data.password)
+        .then((authUser) => {
+            authUser.user.updateProfile({
+                displayName: data.name,
+                photoURL: 'https://lh3.googleusercontent.com/proxy/rX7_NwsRcqZe6Nw9U3N0CZWgOdXEPY8Qtpg558fTkZV46rguDqxdRbh0ppfaZEf-hUjwsD6EEEyxej_sHUP9CEK-fXSFQm2MtuTviNvVUg-bub3DLZti8Y74Z0_FAH0uGQ'
             })
-            .catch(error => alert(error.message));
-        }
+        })
+        .catch(error => alert(error.message));      
     };
 
     function renderBackArrow() {
