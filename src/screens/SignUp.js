@@ -92,7 +92,7 @@ const SignUp = ({ navigation }) => {
         .then((authUser) => {
             authUser.user.updateProfile({
                 displayName: data.name,
-                photoURL: 'https://lh3.googleusercontent.com/proxy/rX7_NwsRcqZe6Nw9U3N0CZWgOdXEPY8Qtpg558fTkZV46rguDqxdRbh0ppfaZEf-hUjwsD6EEEyxej_sHUP9CEK-fXSFQm2MtuTviNvVUg-bub3DLZti8Y74Z0_FAH0uGQ'
+                photoURL: "https://www.exceptionaldentistry.com/assets/images/smiles-1.jpg"
             })
         })
         .catch(error => alert(error.message));      

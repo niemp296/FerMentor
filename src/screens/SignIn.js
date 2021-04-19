@@ -76,7 +76,7 @@ const SignIn = ({ navigation }) => {
 
     const signIn = () => {
         if ( data.email.length == 0 || data.password.length == 0 ) {
-            Alert.alert('Wrong Input!', 'Username or password field cannot be empty.', [
+            alert('Username or password field cannot be empty.', [
                 {text: 'Okay'}
             ]);
             return;

@@ -8,6 +8,10 @@ export const search = require("../assets/icons/search_icon.png");
 export const star = require("../assets/icons/star_icon.png");
 export const tracking = require("../assets/icons/tracking_icon.png");
 export const setting = require("../assets/icons/setting_icon.png");
+export const alcohol = require("../assets/icons/alcohol_icon.png");
+export const temp = require("../assets/icons/temp_icon.png");
+export const time = require("../assets/icons/time_icon.png");
+export const add = require("../assets/icons/add_icon.png");
 
 export default {
     arrow,
@@ -19,5 +23,9 @@ export default {
     search,
     star,
     tracking,
-    setting
+    setting,
+    alcohol,
+    temp,
+    time,
+    add
 }
