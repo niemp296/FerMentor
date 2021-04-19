@@ -12,6 +12,7 @@ export const alcohol = require("../assets/icons/alcohol_icon.png");
 export const temp = require("../assets/icons/temp_icon.png");
 export const time = require("../assets/icons/time_icon.png");
 export const add = require("../assets/icons/add_icon.png");
+export const shop = require("../assets/icons/shop_icon.png");
 
 export default {
     arrow,
@@ -27,5 +28,6 @@ export default {
     alcohol,
     temp,
     time,
-    add
+    add,
+    shop
 }

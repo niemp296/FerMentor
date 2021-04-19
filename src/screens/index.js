@@ -7,6 +7,7 @@ import Discussion from './Discussion';
 import RecipeDetail from './RecipeDetail';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
+import Shop from './Shop';
 
 export {
     //main pages
@@ -20,5 +21,6 @@ export {
     RecipeDetail,
     //SignIn, SignUp
     SignIn,
-    SignUp
+    SignUp,
+    Shop
 }

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { Home, Tracking, Profile, 
-  Recipes, Conversion, Discussion, RecipeDetail, SignIn, SignUp } from './src/screens';
+  Recipes, Conversion, Discussion, RecipeDetail, SignIn, SignUp, Shop } from './src/screens';
 import Tabs from './src/navigations/tabs';
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
@@ -44,6 +44,7 @@ const App = () => {
         <Stack.Screen name="Conversion" component={Conversion}/>
         <Stack.Screen name="Discussion" component={Discussion}/>
         <Stack.Screen name="RecipeDetail" component={RecipeDetail}/>
+        <Stack.Screen name="Shop" component={Shop}/>
       </Stack.Navigator>
     </NavigationContainer>
   )
