@@ -8,6 +8,8 @@ import RecipeDetail from './RecipeDetail';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import Shop from './Shop';
+import TrackingDetail from './TrackingDetail';
+import ShopItemDetail from './ShopItemDetail';
 
 export {
     //main pages
@@ -19,8 +21,11 @@ export {
     Conversion,
     Discussion,
     RecipeDetail,
+    Shop,
+    ShopItemDetail,
+    TrackingDetail,
     //SignIn, SignUp
     SignIn,
     SignUp,
-    Shop
+
 }

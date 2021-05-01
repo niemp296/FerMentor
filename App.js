@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { Home, Tracking, Profile, 
-  Recipes, Conversion, Discussion, RecipeDetail, SignIn, SignUp, Shop } from './src/screens';
+  Recipes, Conversion, Discussion, RecipeDetail, SignIn, SignUp, Shop, TrackingDetail,
+  ShopItemDetail } from './src/screens';
 import Tabs from './src/navigations/tabs';
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
@@ -45,6 +46,8 @@ const App = () => {
         <Stack.Screen name="Discussion" component={Discussion}/>
         <Stack.Screen name="RecipeDetail" component={RecipeDetail}/>
         <Stack.Screen name="Shop" component={Shop}/>
+        <Stack.Screen name="TrackingDetail" component={TrackingDetail}/>
+        <Stack.Screen name="ShopItemDetail" component={ShopItemDetail}/>
       </Stack.Navigator>
     </NavigationContainer>
   )

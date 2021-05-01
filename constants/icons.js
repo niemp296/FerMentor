@@ -13,6 +13,8 @@ export const temp = require("../assets/icons/temp_icon.png");
 export const time = require("../assets/icons/time_icon.png");
 export const add = require("../assets/icons/add_icon.png");
 export const shop = require("../assets/icons/shop_icon.png");
+export const sensor = require("../assets/icons/sensor_icon.png");
+export const cart = require("../assets/icons/cart_icon.png");
 
 export default {
     arrow,
@@ -29,5 +31,7 @@ export default {
     temp,
     time,
     add,
-    shop
+    shop,
+    sensor,
+    cart
 }

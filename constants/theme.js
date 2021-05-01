@@ -21,6 +21,7 @@ export const SIZES = {
     font: 20,
     radius: 10,
     padding: 10,
+    base: 10,
     
     //font sizes
     largeTitle: 50,

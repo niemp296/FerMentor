@@ -66,7 +66,7 @@ const RecipeDetail = ({ route, navigation }) => {
 
     function renderInfoChild(bold, detail) {
         return (
-            <Text style={styles.detailItem}>{bold}   <Text style={{fontWeight: "400"}} key={bold}>{detail}</Text>
+            <Text style={styles.detailItem} key={detail}>{bold}   <Text style={{fontWeight: "400"}} key={bold}>{detail}</Text>
             </Text>             
         )
     }
@@ -93,7 +93,7 @@ const RecipeDetail = ({ route, navigation }) => {
 
     function renderIngredient() {
         const listItems = recipe?.ingredients.map(( item ) =>
-            <Unorderedlist color={COLORS.primary}>
+            <Unorderedlist color={COLORS.primary} key={item}>
                 <Text style={styles.bulletText}>{item}</Text>
             </Unorderedlist>
         );

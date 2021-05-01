@@ -73,23 +73,23 @@ const Tracking = ({ navigation }) => {
             return (
                 <TouchableOpacity
                     style={{marginBottom: SIZES.padding * 1}}
-                    //onPress -> navigate to tracking detail
-                    onPress={() => navigation.navigate("Recipes")}
+                    onPress={() => navigation.navigate("TrackingDetail", {item})}
                 >
-                    <View style={styles.brewBlock}>
+                    <View style={styles.brewBlock} key={item.name}>
                         <View style={styles.brewContainer} key={item.id}>
-                            <Text style={styles.brewTitle}>{item.name}</Text>
-                            <Text style={styles.brewBody}>Type: {item.type}</Text>
-                            <Text style={styles.brewBody}>Yield: {item.yield}</Text>
-                            <Text style={styles.brewBody}>Start Date: {item.startDate}</Text>
+                            <Text style={styles.brewTitle} key={item.name}>{item.name}</Text>
+                            <Text style={styles.brewBody} key={item.type}>Type: {item.type}</Text>
+                            <Text style={styles.brewBody} key={item.yield}>Yield: {item.yield}</Text>
+                            <Text style={styles.brewBody} key={item.startDate}>Start Date: {item.startDate}</Text>
                         </View>
-                        <View style={styles.brewContainer}>
+                        <View style={styles.brewContainer} key={item.type}>
                             <View style={styles.ratingPosition} key={item.alcohol}>
                                 <View style={styles.icon} key={item.time}>
                                     <Image
                                         source={icons.time}
                                         resizeMode="contain"
                                         style={styles.rating} 
+                                        key={'time'}
                                     />
                                     <Text>{Math.floor((new Date().getTime() - new Date(item.startDate))/(1000*60*60*24))} day(s)</Text>
                                 </View>
@@ -98,6 +98,7 @@ const Tracking = ({ navigation }) => {
                                         source={icons.temp}
                                         resizeMode="contain"
                                         style={styles.rating} 
+                                        key={'temp'}
                                     />
                                     {item.temp != -100 ? <Text>{item.temp} F</Text>
                                                         : <Text> _ _ F</Text>}
@@ -107,6 +108,7 @@ const Tracking = ({ navigation }) => {
                                         source={icons.alcohol}
                                         resizeMode="contain"
                                         style={styles.rating} 
+                                        key={'alcohol'}
                                     />
                                     <Text>{item.alcohol} %</Text>
                                 </View>
@@ -167,7 +169,7 @@ const Tracking = ({ navigation }) => {
 
     function renderBrewStatus(status) {
         return (
-            <View style={styles.brewStatus}>
+            <View style={styles.brewStatus} key={'brew'}>
                 <Text style={styles.brewStatusText} key={status}>{status == "current" ? "CURRENT BREWS" 
                                                                         : "PAST BREWS"} </Text>
                 {status == "current" ? renderAddBrew()  : []}                                                        
@@ -178,12 +180,11 @@ const Tracking = ({ navigation }) => {
     function renderBrewList() {
 
         return (
-            <View style={styles.listBlocks}>
+            <View style={styles.listBlocks} key={'brewList'}>
                 {renderBrewStatus("current")}
                 {renderCurrentBrew()}
                 {renderBrewStatus("past")}
-                {renderPastBrew()}
-                
+                {renderPastBrew()}            
             </View>
         )
     }
@@ -194,14 +195,14 @@ const Tracking = ({ navigation }) => {
                 onPress={() => navigation.navigate("SensorStation")}
             >
                 <View style={styles.stationBox} key={'sensor'}>
-                    <Text style={styles.stationText}>SENSOR STATION</Text>
+                    <Text style={styles.stationText} key={'station'}>SENSOR STATION</Text>
                 </View>
             </TouchableOpacity>
         )
     }
     function renderHeader() {
         return (
-            <View style={styles.header}>
+            <View style={styles.header} key={'header'}>
                 <Text style={styles.headerText} key={'tracker'}>Homebrew Tracker</Text>
                 {renderSensorStation()}
             </View>
@@ -210,7 +211,7 @@ const Tracking = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView>
+            <ScrollView key={'scrollview'}>
                 {renderHeader()}
                 {renderBrewList()}
             </ScrollView>

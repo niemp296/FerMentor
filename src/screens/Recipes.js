@@ -95,7 +95,7 @@ const Recipes = ({ navigation }) => {
             <TouchableOpacity
                 onPress={() => navigation.navigate("Recipes")}
             >
-                <View style={styles.blockPadding}>
+                <View style={styles.blockPadding} key={title}>
                     <Text style={styles.blockTitle}>{title}</Text>
                     <Image
                         source={images.recipes}
@@ -111,12 +111,11 @@ const Recipes = ({ navigation }) => {
         const renderItem = ({ item }) => (
             <TouchableOpacity
                 style={{marginBottom: SIZES.padding * 1}}
-                //onPress -> navigate to recipe detail
                 onPress={() => navigation.navigate("RecipeDetail", {
                     item
                 })}
             >
-                <View style={styles.recipeBlock}>
+                <View style={styles.recipeBlock} key={item.id}>
                     <Text style={styles.recipeTitle}>{item.name}</Text>
                     <Text style={styles.recipeBody}>Prep Time: {item.prepTime}</Text>
                     <Text style={styles.recipeBody}>Difficulty: {item.difficulty}</Text>

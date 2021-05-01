@@ -34,9 +34,9 @@ const Profile = ({ navigation }) => {
     function renderLogOut() {
         return (
             <View style={styles.logOut}>
-                <Text style={styles.resetPasswordText}>RESET YOUR PASSWORD</Text>
+                <Text style={styles.resetPasswordText}>Reset Your Password</Text>
                 <TouchableOpacity onPress={signOutUser}>
-                    <Text style={styles.username}>LOG OUT</Text>
+                    <Text style={styles.username}>Log Out</Text>
                 </TouchableOpacity>
             </View>
         )
