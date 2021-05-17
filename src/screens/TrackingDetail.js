@@ -8,18 +8,255 @@ import {
     StyleSheet,
     TouchableOpacity,
     FlatList,
-    Image
+    Image,
+    Animated
 } from 'react-native';
-import { icons, images, SIZES, COLORS, FONTS } from '../../constants';
+import {VictoryScatter, VictoryLine, VictoryChart, VictoryAxis} from "victory-native";
+import { icons, images, SIZES, COLORS, FONTS, VictoryTheme } from '../../constants';
 import Recipes from './Recipes';
+import TextButton from './TextButton';
 
 const Tracking = ({ route, navigation }) => {
+
+    const scrollX = new Animated.Value(0);
+    const numberOfCharts = [1, 2, 3];
+    //dummy temp
+    const chartData = [
+        {x: 1, y: 2.5},
+        {x: 1.5, y: 2},
+        {x: 2, y: 2.3},
+        {x: 2.5, y: 1.4},
+        {x: 3, y: 1.5},
+        {x: 3.5, y: 2.3},
+        {x: 4, y: 2.8},
+    ]
+    const options = [
+        {
+            id: 1,
+            label: "1 hr"
+        },
+        {
+            id: 2,
+            label: "3 Days"
+        },
+        {
+            id: 3,
+            label: "1 Week"
+        },
+        {
+            id: 4,
+            label: "1 Month"
+        },
+        {
+            id: 5,
+            label: "3 Months"
+        },
+    ]
     const [batch, setBatch] = React.useState(null);
+    const [chartOptions, setChartOptions] = React.useState(options)
+    const [selectedOption, setSeclectedOption] = React.useState(options[0])
     React.useEffect(() => {
         let { item } = route.params;
         setBatch(item)
     })
 
+    function optionOnClickHandler(option) {
+        setSeclectedOption(option)
+    }
+
+    function renderTimeLabel() {
+        return (
+            <View style={{flexDirection:'row', flex: 1}}>
+                <Image
+                    source={icons.temp}
+                    resizeMode="cover"
+                    style={{
+                        width: 25,
+                        height: 25,
+                        marginTop:5
+                    }}
+                />
+                <View style={{paddingTop: SIZES.padding}}>
+                    <Text style={{...FONTS.h4}}>Temp</Text>
+                </View>
+            </View>
+        )
+    }
+
+    function renderDots() {
+        const dotPosition = Animated.divide(scrollX, SIZES.width)
+        return (
+            <View style={{height: 30, marginTop: 30}}>
+                <View
+                    style={styles.dot}
+                >
+                    {numberOfCharts.map((item, index) => {
+                        
+                        const opacity = dotPosition.interpolate({
+                            inputRange: [index - 1, index, index + 1],
+                            outputRange: [0.3, 1, 0.3],
+                            extrapolate: "clamp"
+                        })
+                        const dotSize = dotPosition.interpolate({
+                            inputRange: [index - 1, index, index + 1],
+                            outputRange: [SIZES.base * 0.8, 10, SIZES.base * 0.8],
+                            extrapolate: "clamp"
+                        })
+                        const dotColor = dotPosition.interpolate({
+                            inputRange: [index - 1, index, index + 1],
+                            outputRange: [COLORS.lightBlue, COLORS.secondary, COLORS.lightBlue],
+                            extrapolate: "clamp"
+                        })
+
+                        return (
+                            <Animated.View
+                                key={`dot-${index}`}
+                                opacity={opacity}
+                                style={{
+                                    borderRadius: SIZES.radius,
+                                    marginHorizontal: SIZES.padding/2,
+                                    width: dotSize,
+                                    height: dotSize,
+                                    backgroundColor: dotColor
+                                }}
+                            />
+                        )
+
+                    })}
+
+                </View>
+            </View>
+        )
+    }
+
+    function renderChart() {
+        return (
+            <View
+                style={{
+                    margin: SIZES.padding * 2,
+                    // paddingBottom: SIZES.padding*2,
+                    alignItems: 'center',
+                    borderRadius: SIZES.radius,
+                    backgroundColor: COLORS.white,
+                    ...styles.shadow
+                }}
+            >
+                <View style={{
+                    flexDirection: 'row',
+                    marginTop: SIZES.padding,
+                    paddingHorizontal: SIZES.padding
+                }}>
+                    {renderTimeLabel()}
+                </View>
+                {/* Chart */}
+                <Animated.ScrollView
+                    horizontal
+                    pagingEnabled
+                    scrollEnabledThrottle={16}
+                    snapToAlignment="center"
+                    snapToInterval={SIZES.width - 40}
+                    showsHorizontalScrollIndicator={false}
+                    decelerationRate={0}
+                    onScroll={Animated.event([
+                        {nativeEvent:{contentOffset: {x: scrollX}}}
+                    ], {useNativeDriver: false})}
+                >
+                    {
+                        numberOfCharts.map((item, index) => (
+                            <View
+                                key={`chart-${index}`}
+                            >
+                                <View style={{marginTop: -25}}>
+                                    <VictoryChart
+                                        theme={VictoryTheme}
+                                        height={220}
+                                        width={SIZES.width - 40}
+                                    >
+                                        <VictoryLine
+                                            style={{
+                                                data: {
+                                                    stroke: COLORS.secondary
+                                                },
+                                                parent: {
+                                                    border: "1px solid #ccc"
+                                                }
+                                            }}
+                                            data={chartData}
+                                            categories={{
+                                                x: ["15 MIN", "30 MIN", "45 MIN", "60 MIN"],
+                                                y: ["20", "40", "60", "80"]
+                                            }}
+                                        />
+                                        <VictoryScatter 
+                                            data={chartData}
+                                            size={7}
+                                            style={{
+                                                data: {
+                                                    fill: COLORS.secondary
+                                                }
+                                            }}
+                                        />
+                                        <VictoryAxis 
+                                            style={{
+                                                grid: {
+                                                    stroke: "transparent"
+                                                }
+                                            }}
+                                        />
+                                        <VictoryAxis
+                                            dependentAxis
+                                            style={{
+                                                axis: {
+                                                    stroke: "transparent"
+                                                },
+                                                grid: {
+                                                    stroke: "grey"
+                                                }
+                                            }}
+                                        />
+                                    </VictoryChart>
+                                </View>
+                            </View>
+                        ))
+                    }
+                    
+                </Animated.ScrollView>
+                {/* Option */}
+                <View
+                    style={{
+                        width: "100%",
+                        paddingHorizontal: SIZES.padding,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}
+                >
+                    {
+                        options.map((option) => {
+                            return (
+                                <TextButton 
+                                    key={`option-${option.id}`}
+                                    label={option.label}
+                                    customContainerStyle={{
+                                        height: 30,
+                                        width: 60,
+                                        borderRadius: 15,
+                                        backgroundColor: selectedOption.id == option.id ? COLORS.primary : COLORS.lightBlue
+                                    }}
+                                    customLableStyle={{
+                                        color: selectedOption.id == option.id ? COLORS.white : COLORS.gray,
+                                        ...FONTS.body5
+                                    }}
+                                    onPress={() => optionOnClickHandler(option)}
+                                />
+                            )
+                        })
+                    }
+                </View>
+                {/* Dots*/}
+                {renderDots()}
+            </View>
+        )
+    }
     function renderIcon() {
         return (
             <View style={styles.brewContainer} key={'container'}>
@@ -49,6 +286,14 @@ const Tracking = ({ route, navigation }) => {
                         <Text stye={styles.textIcon}>Sensor {batch?.sensor_id}</Text>
                     </View>
                 </View>
+            </View>
+        )
+    }
+
+    function renderReceipt() {
+        return (
+            <View>
+                
             </View>
         )
     }
@@ -91,6 +336,7 @@ const Tracking = ({ route, navigation }) => {
         <SafeAreaView style={styles.container}>
             {renderBackArrow()}
             {renderHeader()}
+            {renderChart()}
         </SafeAreaView>
     )
 }
@@ -150,7 +396,22 @@ const styles = StyleSheet.create({
     textIcon: {
         ...FONTS.body3,
         color: COLORS.primary
-    }
+    },
+    shadow: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+        elevation: 1
+    },
+    dot: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 });
 
 export default Tracking;

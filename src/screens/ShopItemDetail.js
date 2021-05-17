@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { icons, images, SIZES, COLORS, FONTS } from '../../constants';
 
+
 const ShopItemDetail = ({ route, navigation}) => {
 
     const scrollX = new Animated.Value(0)

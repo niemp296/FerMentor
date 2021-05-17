@@ -10,6 +10,7 @@ import SignUp from './SignUp';
 import Shop from './Shop';
 import TrackingDetail from './TrackingDetail';
 import ShopItemDetail from './ShopItemDetail';
+import TextButton from './TextButton';
 
 export {
     //main pages
@@ -24,6 +25,7 @@ export {
     Shop,
     ShopItemDetail,
     TrackingDetail,
+    TextButton,
     //SignIn, SignUp
     SignIn,
     SignUp,
