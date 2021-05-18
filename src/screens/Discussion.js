@@ -1,4 +1,5 @@
 import React from 'react';
+import { DynamicColorIOS } from 'react-native';
 import {
     View,
     Text,
@@ -6,14 +7,37 @@ import {
     StyleSheet,
     TouchableOpacity,
     Image,
-    FlatList
+    FlatList,
+    Linking
 } from 'react-native';
 import { icons, images, SIZES, COLORS, FONTS } from '../../constants';
-import { auth, db } from '../../backend/firebase';
 
 const Discussion = ({ navigation }) => {
-    const [chats, setChats] = React.useState([]);
 
+    function renderJoinForum() {
+        return (
+            <View style={styles.discussionContainer}>
+                <Image
+                    source={images.FBjoin}
+                    resizeMode="contain"
+                    style={styles.discussionImage}
+                />
+                <TouchableOpacity
+                    onPress={() => {Linking.openURL('https://facebook.com')}}
+                    style={styles.FBContainer}
+                >
+                    <Image
+                        source={icons.facebook}
+                        resizeMode="contain"
+                    />
+                    <View key={'click-link'} style={{flexDirection:'column'}}>
+                        <Text style={styles.discussionText} key={'join'}>Click here to join our</Text>
+                        <Text style={styles.discussionText} key={'fb'}>Facebook group!</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        )
+    }
     function renderBackArrow() {
         return (
             <View style={styles.header}>
@@ -29,7 +53,7 @@ const Discussion = ({ navigation }) => {
                     </Image>
                 </TouchableOpacity>
                 <View style={styles.title}>
-                    <Text style={styles.titleText}>CHAT ROOM</Text>
+                    <Text style={styles.titleText}>DISCUSSION</Text>
                 </View>
             </View>
         )
@@ -37,6 +61,7 @@ const Discussion = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             {renderBackArrow()}
+            {renderJoinForum()}
         </SafeAreaView>
     )
 } 
@@ -68,6 +93,23 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    discussionImage: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    discussionText: {
+        ...FONTS.h3,
+        color: COLORS.primary
+    },
+    discussionContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: SIZES.padding * 3
+    },
+    FBContainer: {
+        flexDirection: 'row',
+        padding: SIZES.padding * 3
     }
 })
 

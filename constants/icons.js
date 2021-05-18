@@ -15,6 +15,7 @@ export const add = require("../assets/icons/add_icon.png");
 export const shop = require("../assets/icons/shop_icon.png");
 export const sensor = require("../assets/icons/sensor_icon.png");
 export const cart = require("../assets/icons/cart_icon.png");
+export const facebook = require("../assets/icons/facebook_icon.png");
 
 export default {
     arrow,
@@ -33,5 +34,6 @@ export default {
     add,
     shop,
     sensor,
-    cart
+    cart,
+    facebook
 }

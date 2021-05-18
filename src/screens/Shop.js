@@ -98,8 +98,24 @@ const Shop = ({ navigation }) => {
 
     const [itemList, setItems] = React.useState(itemData)
     const [categories, setCategories] = React.useState(categoryData)
+    const [search, setSearch] = React.useState()
+    const [filteredData, setFilteredData] = React.useState(itemData)
 
     const handleSearch = (val) => {
+        if (val) {
+            const newData = itemData.filter((item) => {
+                const items = item.name ? 
+                    item.name.toUpperCase() 
+                    : ''.toUpperCase();
+                const textData = val.toUpperCase();
+                return items.indexOf(textData) > -1;
+            });
+            setFilteredData(newData);
+            setSearch(val);
+        } else {
+            setFilteredData(itemList)
+            setSearch(val)
+        }      
     }
 
     function getCategoryNameById(id) {
@@ -117,6 +133,7 @@ const Shop = ({ navigation }) => {
                     <TextInput
                         placeholder="Brew Kit Selector"
                         style={styles.titleText}
+                        value={search}
                         autoCapitalize="none"
                         onChangeText={(val) => handleSearch(val)}
                     />
@@ -241,7 +258,7 @@ const Shop = ({ navigation }) => {
 
         return (
             <FlatList
-                data={itemList}
+                data={filteredData}
                 keyExtractor={item=> `${item.id}`}
                 renderItem={renderItem}
                 contentContainerStyle={styles.itemContainer}
