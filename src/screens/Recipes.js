@@ -6,7 +6,8 @@ import {
     StyleSheet,
     TouchableOpacity,
     Image,
-    FlatList
+    FlatList,
+    TextInput
 } from 'react-native';
 import { icons, images, SIZES, COLORS, FONTS } from '../../constants';
 
@@ -72,7 +73,26 @@ const Recipes = ({ navigation }) => {
         }
     ]
 
-    const [recipesList, setRecipes] = React.useState(recipesData)
+    const [recipesList, setRecipes] = React.useState(recipesData);
+    const [search, setSearch] = React.useState();
+    const [filteredData, setFilteredData] = React.useState(recipesData);
+
+    const handleSearch = (val) => {
+        if (val) {
+            const newData = recipesList.filter((item) => {
+                const items = item.name ? 
+                    item.name.toUpperCase() 
+                    : ''.toUpperCase();
+                const textData = val.toUpperCase();
+                return items.indexOf(textData) > -1;
+            });
+            setFilteredData(newData);
+            setSearch(val);
+        } else {
+            setFilteredData(recipesList)
+            setSearch(val)
+        }      
+    }
 
     function renderBackArrow() {
         return (
@@ -107,6 +127,42 @@ const Recipes = ({ navigation }) => {
         )
     }
 
+    function renderSearch() {
+        return (
+                <View style={{
+                    borderBottomColor: COLORS.lightBlue,
+                    borderBottomWidth: 0.5,
+                    justifyContent: 'space-between',
+                    width: SIZES.width*0.85,
+                    flexDirection: 'row',
+                    marginHorizontal: SIZES.padding * 3
+                    }} key='search'>         
+                    <TextInput
+                        placeholder="Search For A Recipe"
+                        style={styles.titleText}
+                        value={search}
+                        autoCapitalize="none"
+                        onChangeText={(val) => handleSearch(val)}
+                    />
+                    <TouchableOpacity
+                        style={{   
+                            width: 50,
+                            // paddingRight: SIZES.padding*2,
+                            justifyContent: 'flex-end'
+                        }}
+                    >
+                        <Image
+                            source={icons.search}
+                            resizeMode="contain"
+                            style={{
+                                width: 32,
+                                height: 32}}
+                        />
+                    </TouchableOpacity>
+                </View>  
+        )
+    }
+
     function renderRecipesList() {
         const renderItem = ({ item }) => (
             <TouchableOpacity
@@ -134,7 +190,7 @@ const Recipes = ({ navigation }) => {
         return (
             <View style={styles.listBlocks}>
                 <FlatList
-                    data={recipesList}
+                    data={filteredData}
                     keyExtractor={item => `${item.id}`}
                     renderItem={renderItem}
                     contentContainerStyle={{
@@ -154,6 +210,7 @@ const Recipes = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             {renderBackArrow()}
             {renderShareRecipe("Share your recipe!")}
+            {renderSearch()}
             {renderRecipesList()}
         </SafeAreaView>
     )
@@ -182,6 +239,7 @@ const styles = StyleSheet.create({
     },
     blockPadding: {
         paddingHorizontal: SIZES.padding * 3, 
+        paddingBottom: SIZES.padding * 3
     },
     shadow: {
         shadowColor: "#000",
@@ -240,7 +298,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row'
-    }
+    },
+    titleText: {
+        ...FONTS.h3,
+        color: COLORS.lightBlue,
+    },
 })
 
 export default Recipes;
