@@ -1,19 +1,14 @@
 import React from 'react';
-import { VirtualizedList } from 'react-native';
-import { ScrollView } from 'react-native';
-import { 
-    SafeAreaView,
-    View,
-    Text,
-    StyleSheet,
-    TouchableOpacity,
-    FlatList,
-    Image,
-    Animated
+import {
+    Animated, Image, SafeAreaView,
+
+
+    StyleSheet, Text,
+
+    TouchableOpacity, View
 } from 'react-native';
-import {VictoryScatter, VictoryLine, VictoryChart, VictoryAxis} from "victory-native";
-import { icons, images, SIZES, COLORS, FONTS, VictoryTheme } from '../../constants';
-import Recipes from './Recipes';
+import { VictoryAxis, VictoryChart, VictoryLine, VictoryScatter } from "victory-native";
+import { COLORS, FONTS, icons, SIZES, VictoryTheme } from '../../constants';
 import TextButton from './TextButton';
 
 const Tracking = ({ route, navigation }) => {
@@ -55,6 +50,7 @@ const Tracking = ({ route, navigation }) => {
     const [batch, setBatch] = React.useState(null);
     const [chartOptions, setChartOptions] = React.useState(options)
     const [selectedOption, setSeclectedOption] = React.useState(options[0])
+    const [temperatureValue, setTemperatureValue] = React.useState(50);
     React.useEffect(() => {
         let { item } = route.params;
         setBatch(item)
@@ -62,6 +58,14 @@ const Tracking = ({ route, navigation }) => {
 
     function optionOnClickHandler(option) {
         setSeclectedOption(option)
+    }
+
+    function handleIncreaseTemp(temp) {
+        setTemperatureValue(temp+1)
+    }
+
+    function handleDecreaseTemp(temp) {
+        setTemperatureValue(temp-1)
     }
 
     function renderTimeLabel() {
@@ -290,10 +294,49 @@ const Tracking = ({ route, navigation }) => {
         )
     }
 
-    function renderReceipt() {
+    function renderReceipt(item) {
         return (
-            <View>
-                
+            <TextButton 
+                key={`option-${item?.id}`}
+                label={'RECIPE'}
+                customContainerStyle={{
+                    height: 40,
+                    width: 100,
+                    borderRadius: SIZES.radius,
+                    backgroundColor:  COLORS.primary,
+                    margin: SIZES.padding *2
+                }}
+                customLableStyle={{
+                    color: COLORS.white,
+                    ...FONTS.h4
+                }}
+                onPress={() => navigation.navigate("RecipeDetail", {
+                    item
+                })}
+            />
+        )
+    }
+
+    function renderTempControll() {
+        return (
+            <View style={styles.controlContainer}>
+                <View style={styles.tempContainer}>
+                    <Text style={styles.temperature}>{temperatureValue}°F</Text>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity 
+                        style={styles.button}
+                        onPress={() => handleIncreaseTemp(temperatureValue)}
+                    >
+                        <Text style={styles.buttonText}>+</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                        style={styles.button}
+                        onPress={() => handleDecreaseTemp(temperatureValue)}
+                    >
+                        <Text style={styles.buttonText}>-</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         )
     }
@@ -336,7 +379,9 @@ const Tracking = ({ route, navigation }) => {
         <SafeAreaView style={styles.container}>
             {renderBackArrow()}
             {renderHeader()}
+            {renderTempControll()}
             {renderChart()}
+            {renderReceipt(batch?.recipe_id)}
         </SafeAreaView>
     )
 }
@@ -411,7 +456,51 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+    },      
+    temperature: {
+        color: COLORS.primary,
+        textAlign: 'center',
+        ...FONTS.largeTitle,
     },
+    tempContainer: {
+        width: 200,
+        height: 200,
+        borderRadius: 200/2,
+        backgroundColor: COLORS.lightYellow,
+        borderColor: COLORS.primary,
+        borderWidth: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    button: {
+        width: 60,
+        height: 60,
+        borderRadius: 60/2,
+        backgroundColor: COLORS.lightYellow,
+        borderColor: COLORS.primary,
+        borderWidth: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: SIZES.padding * 2
+    },
+    buttonText: {
+        color: COLORS.primary,
+        textAlign: 'center',
+        ...FONTS.h1,
+    },
+    controlContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: SIZES.padding * 3,
+        paddingVertical: SIZES.padding
+    },
+    buttonContainer: {
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        padding: SIZES.padding * 3,
+    }
+
 });
 
 export default Tracking;
